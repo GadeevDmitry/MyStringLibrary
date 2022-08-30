@@ -14,4 +14,4 @@ void strdup_read_tests();
 
 void fgets_read_tests();
 
-#endif
+#endif //MY_STR_TESTING

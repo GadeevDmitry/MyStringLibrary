@@ -1,6 +1,8 @@
 #ifndef MACROS_H
 #define MACROS_H
 
+#include <stdlib.h>
+
 #define MyAssert(condition)                                                                       \
         if (!(condition)) {                                                                       \
             printf("\nERROR: %s\n"                                                                \
@@ -10,4 +12,4 @@
                    abort();                                                                       \
         }
 
-#endif
+#endif //MACROS

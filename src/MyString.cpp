@@ -1,7 +1,6 @@
 /** @file */
 
 #include <stdio.h>
-#include <stdlib.h>
 
 #include "Macros.h"
 
@@ -269,15 +268,53 @@ int MyStrcmp(const char *s1, const char *s2)
     MyAssert(s1 != NULL);
     MyAssert(s2 != NULL);
 
-    while (*s1 || *s2) {
+    int del = 0;
+    for (; (*s1 || *s2) && !(del = *s1++ - *s2++);)
+        ;
 
-        int del = (*s1++ - *s2++);
+    return del;
+}
 
-        if (del) {
-            return del;
+/**
+*   @brief Reads characters from "stream" while another character != '\n' or "cut".
+*   @brief Allocates memory for byte null-terminated string "DataStore" and puts input there
+*
+*   @param stream [in] stream - input stream
+*   @param    cut [in]    cut - character determining whether to stop reading
+*
+*   @return pointer to the allocated memory with null-terminated byte string there
+*/
+
+char* MyGetline(FILE* const stream, const char cut)
+{
+    char *DataStore = NULL;
+    int NowSize = 100; //begin size
+
+    MyAssert(stream != NULL);
+    MyAssert((DataStore = (char *) calloc(NowSize, sizeof(char))) != NULL);
+
+    char c = getc(stream);
+
+    if (c == EOF)
+        return NULL;
+    ungetc(c, stream);
+
+    for (int i = 0; i < NowSize; ++i) {
+
+        if ((c = getc(stream)) == EOF || c == '\n' || c == cut) {
+
+            DataStore[i] = '\0';
+            return (char *) realloc(DataStore, (i + 1) * sizeof(char));
+        }
+
+        DataStore[i] = c;
+
+        if (i == NowSize - 1) {
+            NowSize *= 2;
+
+            DataStore = (char *) realloc(DataStore, NowSize * sizeof(char));
         }
     }
 
-    return 0;
+    return DataStore;
 }
-

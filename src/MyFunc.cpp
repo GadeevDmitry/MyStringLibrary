@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <math.h>
-#include <stdlib.h>
 #include <cmath>
+#include <inttypes.h>
 
 #include "Macros.h"
 #include "MyString.h"
@@ -38,12 +38,12 @@ int Signum(const double num)
 
 int IsFinite(const double num)
 {
-    long long int_num = *(long long*)&num;
+    uint64_t int_num = *(uint64_t*)&num;
 
-    long long         infinite_mask = (long long) 0x7ff << 52;
-    long long check = infinite_mask & int_num;
+    uint64_t         infinite_mask = (uint64_t) 0x7ff << 52;
+    uint64_t check = infinite_mask & int_num;
 
-    return (check == infinite_mask) ? 0 : 1;
+    return check != infinite_mask;
 }
 
 /**
@@ -55,14 +55,14 @@ int IsFinite(const double num)
 *   @return nothing
 */
 
-void StringSwap(const char* a, const char* b)
+void StringSwap(char** const a, char** const b)
 {
     MyAssert(a != NULL);
     MyAssert(b != NULL);
 
-    const char* c = a;
-    a = b;
-    b = c;
+    char* c = *a;
+    *a = *b;
+    *b = c;
 }
 
 /**
@@ -126,7 +126,7 @@ void clear_input_buff(FILE* const stream)
 }
 
 /**
-*   @brief Determines is input stream empty. Stops if a newline character founded.
+*   @brief Determines is input stream empty. Stops if a newline character found.
 *   @brief empty stream does not include any symbols besides spaces
 *
 *   @param stream [in] stream - input stream
@@ -146,11 +146,7 @@ int is_empty_input_buff(FILE* const stream)
 
     ungetc(IsEmptyTemp, stream);
 
-    if (IsEmptyTemp == '\n' || IsEmptyTemp == EOF) {
-        return 1;
-    }
-
-    return 0;
+    return IsEmptyTemp == '\n' || IsEmptyTemp == EOF;
 }
 
 /**
@@ -171,18 +167,18 @@ void string_quick_sort(char **data, int left, int right)
     if (left >= right)
         return;
 
-    StringSwap(data[left], data[(left + right) / 2]);
+    StringSwap(&data[left], &data[(left + right) / 2]);
 
     int cut = left;
     for (int i = left + 1; i <= right; ++i) {
 
         if (MyStrcmp(data[i], data[left]) <= 0) {
 
-            StringSwap(data[++cut], data[i]);
+            StringSwap(&data[++cut], &data[i]);
         }
     }
 
-    StringSwap(data[cut], data[left]);
+    StringSwap(&data[cut], &data[left]);
 
     string_quick_sort(data, left, cut - 1);
     string_quick_sort(data, cut + 1, right);

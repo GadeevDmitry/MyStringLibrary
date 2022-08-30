@@ -1,7 +1,6 @@
 /** @file */
 
 #include <stdio.h>
-#include <stdlib.h>
 
 #include "MyString.h"
 #include "../TestingSrc/MyStrTesting.h"
