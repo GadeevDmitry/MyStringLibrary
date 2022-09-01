@@ -5,25 +5,27 @@
 #include "Macros.h"
 
 /**
-*   @brief Prints the null-terminated byte string in stdout ending with character '\n'
+*   @brief Prints the null-terminated byte string in "stream" ending with character '\n'
 *
-*   @param s [in] s - pointer to the first byte of string to print
+*   @param      s [in]       s - pointer to the first byte of string to print
+*   @param stream [out] stream - pointer to the output file
 *
 *   @return EOF in case of error and non-negative value else
 */
 
-int MyPuts(const char *s)
+int MyPuts(const char *s, FILE* const stream = stdout)
 {
     MyAssert(s != NULL);
+    MyAssert(stream != NULL);
 
     while (*s) {
 
-        if (putchar(*s++) == EOF) {
+        if (putc(*s++, stream) == EOF) {
             return EOF;
         }
     }
 
-    putchar('\n');
+    putc('\n', stream);
 
     return 1;
 }
@@ -285,13 +287,14 @@ int MyStrcmp(const char *s1, const char *s2)
 *   @return pointer to the allocated memory with null-terminated byte string there
 */
 
-char* MyGetline(FILE* const stream, const char cut)
+char *MyGetline(FILE* const stream, const char cut)
 {
-    char *DataStore = NULL;
-    int NowSize = 100; //begin size
+    int NowSize = 1000; //begin size
+
+    char *DataStore = (char *) calloc(NowSize, sizeof(char));
 
     MyAssert(stream != NULL);
-    MyAssert((DataStore = (char *) calloc(NowSize, sizeof(char))) != NULL);
+    MyAssert(DataStore != NULL);
 
     char c = getc(stream);
 
@@ -313,6 +316,8 @@ char* MyGetline(FILE* const stream, const char cut)
             NowSize *= 2;
 
             DataStore = (char *) realloc(DataStore, NowSize * sizeof(char));
+
+            MyAssert(DataStore != NULL);
         }
     }
 

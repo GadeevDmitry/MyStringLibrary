@@ -13,7 +13,7 @@ char * MyStrcat(char *to, const char *from);
 char *MyStrncat(char *to, const char *from, int n);
 
 int MyStrlen(const char *s);
-int   MyPuts(const char *s);
+int   MyPuts(const char *s, FILE* const stream);
 int MyStrcmp(const char *s1, const char *s2);
 
 #endif //MY_STRING

@@ -5,6 +5,7 @@
 #include "MyString.h"
 #include "../TestingSrc/MyStrTesting.h"
 #include "MyFunc.h"
+#include "StringSorter.h"
 
 int main(int argc, const char *argv[])
 {
@@ -19,13 +20,15 @@ int main(int argc, const char *argv[])
                "-6  MyStrcmp Testing [\"my_strcmp_tests.txt\"]\n"
                "-7  MyStrchr Testing [\"my_strchr_tests.txt\"]\n"
                "-8  MyStrdup Testing [\"my_strdup_tests.txt\"]\n"
-               "-9   MyFgets Testing [\"my_fgets_tests.txt\"]\n");
+               "-9   MyFgets Testing [\"my_fgets_tests.txt\"]\n"
+               "--10 Sorting Text\n");
     }
 
     else if (argc == 2) {
 
         int IsAll = MyStrcmp(argv[1], "-0") ? 0 : 1;
         int AtLeastOneMode = 0;
+
         if (IsAll || !MyStrcmp(argv[1], "-1")) {
             strcpy_read_tests();
             AtLeastOneMode = 1;
@@ -69,6 +72,12 @@ int main(int argc, const char *argv[])
         if (IsAll || !MyStrcmp(argv[1], "-9")) {
             fgets_read_tests();
             AtLeastOneMode = 1;
+        }
+
+        if (!MyStrcmp(argv[1], "--10")) {
+
+            SorterMain();
+            return 0;
         }
 
         if (!AtLeastOneMode) {
