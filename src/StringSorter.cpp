@@ -7,9 +7,19 @@
 #include "MyString.h"
 #include "MyFunc.h"
 
+/**
+*   @brief Reads strings from "stream" and allocates memory for them
+*   @brief Makes array of pointers to these strings
+*
+*   @param stream [in] stream - file to read from
+*   @param   Size [out]  Size - size of obtained array
+*
+*   @return pointer to the first element of array
+*/
+
 char **get_pointer_array(FILE* const stream, int* const Size)
 {
-    *Size = 1000;
+    *Size = 1000; //begin Data Size
 
     char **DataStore = (char **) calloc(*Size, sizeof(char *));
 
