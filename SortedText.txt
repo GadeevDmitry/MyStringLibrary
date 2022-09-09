@@ -755,7 +755,29 @@ Claudius, King of Denmark.
 1 Clown.
 1 Clown.
 2 Clown.
+2 Clown.
 1 Clown.
+1 Clown.
+1 Clown.
+2 Clown.
+1 Clown.
+1 Clown.
+1 Clown.
+2 Clown.
+1 Clown.
+1 Clown.
+2 Clown.
+1 Clown.
+1 Clown.
+2 Clown.
+1 Clown.
+1 Clown.
+1 Clown.
+2 Clown.
+1 Clown.
+1 Clown.
+1 Clown.
+2 Clown.
 1 Clown.
 2 Clown.
 1 Clown.
@@ -771,28 +793,6 @@ Claudius, King of Denmark.
 1 Clown.
 2 Clown.
 1 Clown.
-1 Clown.
-1 Clown.
-2 Clown.
-1 Clown.
-2 Clown.
-1 Clown.
-1 Clown.
-1 Clown.
-2 Clown.
-1 Clown.
-1 Clown.
-1 Clown.
-2 Clown.
-1 Clown.
-1 Clown.
-1 Clown.
-2 Clown.
-1 Clown.
-1 Clown.
-2 Clown.
-1 Clown.
-2 Clown.
 1 Clown.
 Colleagued with this dream of his advantage,
 Collected from all simples that have virtue
@@ -3520,8 +3520,8 @@ Ros.
 Ros.
 Ros.
 Ros. and Guil.
-Ros. and Guil.
 Ros and Guil.
+Ros. and Guil.
 Ros. and Guild.
 Rosencrantz, Courtier.
 Rosencrantz! Good lads, how do ye both?
