@@ -2,10 +2,54 @@
 
 #include <stdio.h>
 
+#include "flags.h"
 #include "MyString.h"
-#include "../TestingSrc/MyStrTesting.h"
+#include "Macros.h"
 #include "MyFunc.h"
 #include "StringSorter.h"
+
+#include "../TestingSrc/MyStrTesting.h"
+
+/**
+*   @brief Finds the number of the program mode by command line argument
+*
+*   @param s [in] s - pointer to the first byte of null-terminated byte string
+*
+*   @return number of the mode
+*
+*   @note return -1 if format of string is wrong
+*/
+
+int FindMode(const char *s)
+{
+    MyAssert(s != NULL);
+
+    int len = MyStrlen(s);
+
+    if (len == 1)
+        return -1;
+
+    if (*s++ != '-')
+        return -1;
+
+    if (*s != '-') {
+
+        if (len > 2)
+            return -1;
+
+        return *s - '0';
+    }
+
+    ++s;
+    if (len == 3)
+        return *s - '0';
+
+    if (len == 4)
+        return 10 * (*s - '0') + (*(s + 1) - '0');
+
+    return -1;
+
+}
 
 int main(int argc, const char *argv[])
 {
@@ -23,65 +67,76 @@ int main(int argc, const char *argv[])
                "-9   MyFgets Testing [\"my_fgets_tests.txt\"]\n"
                "--10 Sorting Text\n");
     }
+    else {
 
-    else if (argc == 2) {
+        int at_least_one_mode = 0;
+        int mode = FindMode(argv[1]);
 
-        int IsAll = MyStrcmp(argv[1], "-0") ? 0 : 1;
-        int AtLeastOneMode = 0;
+        at_least_one_mode = (mode >= 0 && mode <= 10) ? 1 : 0;
 
-        if (IsAll || !MyStrcmp(argv[1], "-1")) {
-            strcpy_read_tests();
-            AtLeastOneMode = 1;
-        }
-
-        if (IsAll || !MyStrcmp(argv[1], "-2")) {
-            strncpy_read_tests();
-            AtLeastOneMode = 1;
-        }
-
-        if (IsAll || !MyStrcmp(argv[1], "-3")) {
-            strcat_read_tests();
-            AtLeastOneMode = 1;
-        }
-
-        if (IsAll || !MyStrcmp(argv[1], "-4")) {
-            strncat_read_tests();
-            AtLeastOneMode = 1;
-        }
-
-        if (IsAll || !MyStrcmp(argv[1], "-5")) {
-            strlen_read_tests();
-            AtLeastOneMode = 1;
-        }
-
-        if (IsAll || !MyStrcmp(argv[1], "-6")) {
-            strcmp_read_tests();
-            AtLeastOneMode = 1;
-        }
-
-        if (IsAll || !MyStrcmp(argv[1], "-7")) {
-            strchr_read_tests();
-            AtLeastOneMode = 1;
-        }
-
-        if (IsAll || !MyStrcmp(argv[1], "-8")) {
-            strdup_read_tests();
-            AtLeastOneMode = 1;
-        }
-
-        if (IsAll || !MyStrcmp(argv[1], "-9")) {
-            fgets_read_tests();
-            AtLeastOneMode = 1;
-        }
-
-        if (!MyStrcmp(argv[1], "--10")) {
-
-            SorterMain();
+        if (!at_least_one_mode) {
+            printf("Print: \"a.exe\" to get manual");
             return 0;
         }
 
-        if (!AtLeastOneMode) {
-            printf("Print \"a.exe\" to get manual");
+        switch(mode) {
+
+            case 0:
+
+                 strcpy_read_tests();
+                strncpy_read_tests();
+
+                 strcat_read_tests();
+                strncat_read_tests();
+
+                strlen_read_tests();
+                strcmp_read_tests();
+                strchr_read_tests();
+                strdup_read_tests();
+
+                fgets_read_tests();
+
+                break;
+
+            case 1:
+                strcpy_read_tests();
+                break;
+
+            case 2:
+                strncpy_read_tests();
+                break;
+
+            case 3:
+                strcat_read_tests();
+                break;
+
+            case 4:
+                strncat_read_tests();
+                break;
+
+            case 5:
+                strlen_read_tests();
+                break;
+
+            case 6:
+                strcmp_read_tests();
+                break;
+
+            case 7:
+                strchr_read_tests();
+                break;
+
+            case 8:
+                strdup_read_tests();
+                break;
+
+            case 9:
+                fgets_read_tests();
+                break;
+
+            case 10:
+                SorterMain();
+                break;
         }
     }
 }

@@ -1,13 +1,19 @@
 #ifndef MY_FUNC
 #define MY_FUNC
 
-void DoubleSwap(double* const a, double* const b);
-void StringSwap(char**  const a, char**  const b);
+void MySwap(void *a, void *b, const size_t len);
 
-void string_quick_sort(char **data, int left, int right);
+void QuickSort(void *data, int len, int left, int right, int (*cmp)(void *, void *));
 
 void   clear_input_buff(FILE* const stream);
 int is_empty_input_buff(FILE* const stream);
+
+void *GetPtr(void *BeginArray, const int index, const int len);
+
+int               DigitCmp(void *a_ptr, void *b_ptr);
+int only_letter_string_cmp(void *a_ptr, void *b_ptr);
+
+int at_least_one_letter(const char *s);
 
 int IsFinite(const double num);
 int  IsEqual(const double a, const double b);

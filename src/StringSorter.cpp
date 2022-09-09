@@ -6,6 +6,7 @@
 #include "Macros.h"
 #include "MyString.h"
 #include "MyFunc.h"
+#include "StringSorter.h"
 
 /**
 *   @brief Reads strings from "stream" and allocates memory for them
@@ -57,12 +58,17 @@ void SorterMain()
 
     fclose(Text);
 
-    string_quick_sort(DataStore, 0, Size - 1);
+    QuickSort(DataStore, sizeof(char *), 0, Size - 1, (int (*)(void*, void*)) only_letter_string_cmp);
 
     FILE* SortedText = fopen("SortedText.txt", "w");
 
-    for (int i = 0; i < Size; ++i)
-        MyPuts(DataStore[i], SortedText);
+    for (int i = 0; i < Size; ++i) {
+        if (at_least_one_letter(DataStore[i])) {
+
+            MyPuts(DataStore[i], SortedText);
+        }
+        free(DataStore[i]);
+    }
 
     fclose(SortedText);
 }
