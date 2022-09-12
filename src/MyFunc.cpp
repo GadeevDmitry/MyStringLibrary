@@ -11,6 +11,32 @@
 #include "MyFunc.h"
 
 /**
+*   @brief Changes all entries of value "was" to value "will" in byte string
+*
+*   @param   was [in]   was - character to be replaced
+*   @param  will [in]  will - character to replace
+*   @param start [in] start - pointer to the first byte of byte string
+*   @param     n [in]     n - length of the string
+*
+*   @return number of replaced characters
+*/
+
+int replace(const char was, const char will, char *start, int n)
+{
+    int OldValues = 0;
+
+    while (n--) {
+
+        if (*start++ == was) {
+            start[-1] = will;
+            ++OldValues;
+        }
+    }
+
+    return OldValues;
+}
+
+/**
 *   @brief Determines if the string includes at least one letter.
 *   @brief Letter is the character which ASCII-code: 'a' <= ASCII-code <= 'z' || 'A' <= ASCII-code <= 'Z'
 *
@@ -21,17 +47,14 @@
 
 int at_least_one_letter(const char *s)
 {
-    int FoundLetter = 0;
-
     while (*s) {
 
         if (isalpha(*s++)) {
-            FoundLetter = 1;
-            break;
+            return 1;
         }
     }
 
-    return FoundLetter;
+    return 0;
 }
 
 /**
@@ -163,10 +186,64 @@ int is_empty_input_buff(FILE* const stream)
 }
 
 /**
-*   @brief Compares two null-terminated byte strings ignoring non-letter characters
+*   @brief Compares two null-terminated byte string backwards lexicography ignoring non-letter characters.
 *
-*   @param a_ptr [in] a_ptr - pointer to the first byte of  first string
-*   @param b_ptr [in] b_ptr - pointer to the first byte of second string
+*   @param a_ptr [in] (void *) a_ptr - pointer to the first byte of the  first null-terminated byte string
+*   @param b_ptr [in] (void *) b_ptr - pointer to the first byte of the second null-terminated byte string
+*
+*   @return negative value if a < b
+*   @return positive value if a > b
+*   @return     null value if a = b
+*/
+
+int back_only_letter_string_cmp(void *a_ptr, void *b_ptr)
+{
+    MyAssert(a_ptr != NULL);
+    MyAssert(b_ptr != NULL);
+
+    char *a = (char *)a_ptr;
+    char *b = (char *)b_ptr;
+
+    if (!(*a))
+        return -1;
+
+    if (!(*b))
+        return 1;
+
+    while (*a)
+        ++a;
+
+    while (*b)
+        ++b;
+
+    --a, --b;
+
+    while (*a || *b) {
+
+        while (*a && !isalpha(*a)) {
+            --a;
+        }
+
+        while (*b && !isalpha(*b)) {
+            --b;
+        }
+
+        int del = (*a--) - (*b--);
+
+        if (del) {
+            return del;
+        }
+
+    }
+
+    return 0;
+}
+
+/**
+*   @brief Compares two null-terminated byte strings lexicography ignoring non-letter characters
+*
+*   @param a_ptr [in] (void *) a_ptr - pointer to the first byte of the  first null-terminated byte string
+*   @param b_ptr [in] (void *) b_ptr - pointer to the first byte of the second null-terminated byte string
 *
 *   @return negative value if first string is lexicography less than second string
 *   @return positive value if first string is lexicography more than second string
