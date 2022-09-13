@@ -201,8 +201,8 @@ int back_only_letter_string_cmp(void *a_ptr, void *b_ptr)
     MyAssert(a_ptr != NULL);
     MyAssert(b_ptr != NULL);
 
-    char *a = (char *)a_ptr;
-    char *b = (char *)b_ptr;
+    char *a = *(char **)a_ptr;
+    char *b = *(char **)b_ptr;
 
     if (!(*a))
         return -1;

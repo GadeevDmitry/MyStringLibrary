@@ -56,17 +56,19 @@ char **get_pointer_array(int* const Size, const char* const name, int* const Tex
     MyAssert(stat(name, &BuffSize) != -1);
 
     int TxtSz = *TextSize = BuffSize.st_size;
-    char *Text = (char *) calloc(TxtSz + 1, sizeof(char));
+    char *Text = (char *) calloc(TxtSz + 2, sizeof(char));
 
     MyAssert(Text != NULL);
 
-    fread(Text, sizeof(char), TxtSz, stream);
-    Text[TxtSz] = '\0';
+    Text[        0] = '\0';
+    Text[TxtSz + 1] = '\0';
+
+    fread(Text + 1, sizeof(char), TxtSz, stream);
 
     fclose(stream);
 
-    *Size =  replace('\n', '\0', Text, TxtSz);
-    *Size += replace('\r', '\0', Text, TxtSz);
+    *Size =  replace('\n', '\0', Text + 1, TxtSz);
+    *Size += replace('\r', '\0', Text + 1, TxtSz);
 
     char **PtrArr = (char **) calloc(*Size, sizeof(char *));
 
