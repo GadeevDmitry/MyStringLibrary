@@ -14,7 +14,7 @@ int                    DigitCmp(void *a_ptr, void *b_ptr);
 int      only_letter_string_cmp(void *a_ptr, void *b_ptr);
 int back_only_letter_string_cmp(void *a_ptr, void *b_ptr);
 
-int at_least_one_letter(const char *s);
+int at_least_one_NonVoid_char(const char *s);
 
 int replace(const char was, const char will, char *start, int n);
 

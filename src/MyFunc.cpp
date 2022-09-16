@@ -37,19 +37,19 @@ int replace(const char was, const char will, char *start, int n)
 }
 
 /**
-*   @brief Determines if the string includes at least one letter.
-*   @brief Letter is the character which ASCII-code: 'a' <= ASCII-code <= 'z' || 'A' <= ASCII-code <= 'Z'
+*   @brief Determines if the string includes at least one non-void character.
+*   @brief Non-void is the character is not equal to '\n' or '\t' or ' '.
 *
 *   @param s [in] s - pointer to the first byte of null-terminated byte string
 *
-*   @return value 1 if string includes at least one letter and value 0 else
+*   @return value 1 if string includes at least one non-void character and value 0 else
 */
 
-int at_least_one_letter(const char *s)
+int at_least_one_NonVoid_char(const char *s)
 {
     while (*s) {
 
-        if (isalpha(*s++)) {
+        if (!isspace(*s++)) {
             return 1;
         }
     }
@@ -104,21 +104,20 @@ int IsFinite(const double num)
 *   @return nothing
 */
 
-void MySwap(void *a, void *b, const size_t len)
+void MySwap(void *a, void *b, const int len)
 {
     MyAssert(a != NULL);
     MyAssert(b != NULL);
 
-    char temp = '\0';
+    unsigned char temp = '\0';
 
     for (size_t i = 0; i < len; ++i) {
 
-        temp = *((char *)a + i);
-        *((char *)a + i) = *((char *)b + i);
-        *((char *)b + i) = temp;
+        temp = *((unsigned char *)a + i);
+        *((unsigned char *)a + i) = *((unsigned char *)b + i);
+        *((unsigned char *)b + i) = temp;
     }
 }
-
 
 /**
 *   @brief Compare two double numbers
@@ -201,30 +200,19 @@ int back_only_letter_string_cmp(void *a_ptr, void *b_ptr)
     MyAssert(a_ptr != NULL);
     MyAssert(b_ptr != NULL);
 
-    char *a = *(char **)a_ptr;
-    char *b = *(char **)b_ptr;
+    struct word a_word = *(struct word *) a_ptr;
+    struct word b_word = *(struct word *) b_ptr;
 
-    if (!(*a))
-        return -1;
+    char *a = a_word.Begin + a_word.Len - 1;
+    char *b = b_word.Begin + b_word.Len - 1;
 
-    if (!(*b))
-        return 1;
+    while (a >= a_word.Begin && b != a_word.Begin) {
 
-    while (*a)
-        ++a;
-
-    while (*b)
-        ++b;
-
-    --a, --b;
-
-    while (*a || *b) {
-
-        while (*a && !isalpha(*a)) {
+        while (a >= a_word.Begin && !isalpha(*a)) {
             --a;
         }
 
-        while (*b && !isalpha(*b)) {
+        while (b >= b_word.Begin && !isalpha(*b)) {
             --b;
         }
 
@@ -233,10 +221,17 @@ int back_only_letter_string_cmp(void *a_ptr, void *b_ptr)
         if (del) {
             return del;
         }
-
     }
 
-    return 0;
+    if (a == a_word.Begin && b == b_word.Begin) {
+        return 0;
+    }
+
+    if (a == a_word.Begin) {
+        return -1;
+    }
+
+    return 1;
 }
 
 /**
@@ -255,8 +250,8 @@ int only_letter_string_cmp(void *a_ptr, void *b_ptr)
     MyAssert(a_ptr != NULL);
     MyAssert(b_ptr != NULL);
 
-    char *a = *(char **) a_ptr;
-    char *b = *(char **) b_ptr;
+    char *a = (*(struct word *) a_ptr).Begin;
+    char *b = (*(struct word *) b_ptr).Begin;
 
     while (*a || *b) {
 
@@ -329,9 +324,18 @@ void *GetPtr(void *BeginArray, const int index, const int len)
 *   @return nothing
 */
 
-void QuickSort(void *data, int len, int left, int right, int (*cmp)(void *, void *))
+void QuickSort(void *data, int len, int left, int right, int (*cmp) (void * elem1, void * elem2))
 {
+    //printf("left  = %d, right = %d\n\n", left, right);
+
     MyAssert(data != NULL);
+
+    /*for (int i = left; i <= right; ++i) {
+
+        printf("data[%d].Begin = %p\n"
+               "data[%d].Len = %d\n", i, ((struct word*) data)[i].Begin, i, ((struct word*) data)[i].Len);
+    }
+    printf("\n"); */
 
     if (left >= right)
         return;
@@ -339,18 +343,48 @@ void QuickSort(void *data, int len, int left, int right, int (*cmp)(void *, void
     int mid = (left + right) / 2;
 
     MySwap(GetPtr(data, left, len), GetPtr(data, mid, len), len);
+    //printf("After swap(%d, %d)\n", left, mid);
+
+    /*for (int i = left; i <= right; ++i) {
+
+        printf("data[%d].Begin = %p\n"
+               "data[%d].Len = %d\n",
+               i, ((struct word*) data)[i].Begin, i, ((struct word*) data)[i].Len);
+    }
+    printf("\n"); */
 
     int cut = left;
     for (int i = left + 1; i <= right; ++i) {
 
         if ((*cmp)(GetPtr(data, i, len), GetPtr(data, left, len)) <= 0) {
 
+            //printf("cmp(%d, %d): %d < %d\n", i, left, i, left);
+
             ++cut;
+
             MySwap(GetPtr(data, cut, len), GetPtr(data, i, len), len);
+            //printf("After swap(%d, %d)\n", cut, i);
+
+            /*for (int i = left; i <= right; ++i) {
+
+                printf("data[%d].Begin = %p\n"
+                       "data[%d].Len = %d\n",
+                       i, ((struct word*) data)[i].Begin, i, ((struct word*) data)[i].Len);
+            }
+            printf("\n"); */
         }
     }
 
     MySwap(GetPtr(data, cut, len), GetPtr(data, left, len), len);
+    //printf("After swap(%d, %d)\n", cut, left);
+
+    /*for (int i = left; i <= right; ++i) {
+
+        printf("data[%d].Begin = %p\n"
+               "data[%d].Len = %d\n",
+               i, ((struct word*) data)[i].Begin, i, ((struct word*) data)[i].Len);
+    }
+    printf("\n"); */
 
     QuickSort(data, len,    left, cut - 1, cmp);
     QuickSort(data, len, cut + 1,   right, cmp);

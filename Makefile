@@ -4,6 +4,7 @@ all:
 	g++ -c src/MyString.cpp
 	g++ -c src/MyFunc.cpp
 	g++ -c src/StringSorter.cpp
+	g++ -c src/CommandLine.cpp
 
 	g++ -c TestingSrc/StrncpyTesting.cpp
 	g++ -c TestingSrc/StrcatTesting.cpp
@@ -15,4 +16,4 @@ all:
 	g++ -c TestingSrc/StrncatTesting.cpp
 	g++ -c TestingSrc/FgetsTesting.cpp
 	
-	g++ StringSorter.o main.o MyString.o MyFunc.o StrncpyTesting.o StrcatTesting.o StrchrTesting.o StrcmpTesting.o StrcpyTesting.o StrdupTesting.o StrlenTesting.o StrncatTesting.o FgetsTesting.o
+	g++ CommandLine.o StringSorter.o main.o MyString.o MyFunc.o StrncpyTesting.o StrcatTesting.o StrchrTesting.o StrcmpTesting.o StrcpyTesting.o StrdupTesting.o StrlenTesting.o StrncatTesting.o FgetsTesting.o
