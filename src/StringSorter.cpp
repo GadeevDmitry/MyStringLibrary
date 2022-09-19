@@ -64,7 +64,7 @@ void SorterMain()
 
     free(DataStore.Data);
     free(DataStore.Strings);
-    fclose(SortedText);
+    fclose( SortedText);
 }
 
 /**
