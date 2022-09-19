@@ -11,8 +11,6 @@
 #include "MyFunc.h"
 #include "StringSorter.h"
 
-#include "../TestingSrc/SorterTesting.h"
-
 void SorterMain()
 {
 

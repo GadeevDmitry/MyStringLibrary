@@ -8,7 +8,6 @@
 #include "Macros.h"
 
 #include "../TestingSrc/MyStrTesting.h"
-#include "../TestingSrc/SorterTesting.h"
 
 int main(int argc, const char **argv)
 {
